@@ -134,7 +134,7 @@ public class CourseJdbcRepository implements CourseRepository {
             // <h3>Pour le Débutant : Un message d'erreur peu informatif</h3>
             // <p>Le message "failed to save" est incorrect ici (c'est un copier-coller de l'autre méthode) et devrait être
             // "failed to retrieve courses". C'est un petit bug qui montre l'importance de messages d'erreur clairs.</p>
-            throw new RepositoryException("failed to save ", e);
+            throw new RepositoryException("failed to retrieve course ", e);
         }
     }
 }

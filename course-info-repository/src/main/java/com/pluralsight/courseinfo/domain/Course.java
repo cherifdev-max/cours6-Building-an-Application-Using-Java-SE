@@ -36,16 +36,5 @@ public record Course(String id, String name, long length, String url) {
 
     }
 
-    /**
-     * Méthode "Factory" statique pour créer une nouvelle instance de Course.
-     * Cette méthode est un raccourci pratique pour créer un cours avec des notes vides.
-     *
-     * @param id L'identifiant du cours.
-     * @param name Le nom du cours.
-     * @param length La durée en minutes.
-     * @param url L'URL du cours.
-     */
-    public static Course filled(String id, String name, long length, String url) {
-        return new Course(id, name, length, url);
-    }
+
 }

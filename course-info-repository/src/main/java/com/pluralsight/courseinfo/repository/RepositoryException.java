@@ -26,8 +26,8 @@ import java.sql.SQLException;
  *     <li><b>Abstraction :</b> Les clients du repository n'ont plus besoin de savoir quelle technologie de persistance est
  *     utilisée. Ils attrapent une {@code RepositoryException}, un terme générique qui signifie simplement "quelque chose
  *     s'est mal passé dans la couche de persistance".</li>
- *     <li><b>Changement de technologie facilité :</b> Si demain nous passons à JPA, qui peut lancer des
- *     {@code PersistenceException}, nous n'aurons qu'à modifier notre repository pour qu'il enveloppe la
+ *     <li><b>Chacngement de technologie facilité :</b> Si demain nous passons à JPA, qui peut lancer des
+ *  *     {@code PersistenceExeption}, nous n'aurons qu'à modifier notre repository pour qu'il enveloppe la
  *     {@code PersistenceException} dans une {@code RepositoryException}. Le reste de l'application n'est pas impacté.</li>
  *     <li><b>Choix du type d'exception :</b> Nous avons choisi de faire de {@code RepositoryException} une
  *     <b>"unchecked exception"</b> (en héritant de {@link RuntimeException}). C'est un choix de conception important.

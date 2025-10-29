@@ -75,5 +75,8 @@ public interface CourseRepository {
      * @throws RepositoryException Si une erreur survient lors de la lecture de la base de données.
      */
     List<Course> getAllCourses();
+    static CourseRepository openCourseRepository(String databaseFile){
+        return new CourseJdbcRepository(databaseFile);
+    }
 
 }
