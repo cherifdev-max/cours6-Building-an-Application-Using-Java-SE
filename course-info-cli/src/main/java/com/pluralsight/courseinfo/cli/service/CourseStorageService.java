@@ -64,7 +64,7 @@ public class CourseStorageService {
             Course course = new Course(psCourse.id(),
                                      psCourse.title(),
                                      psCourse.durationInMunite(),
-                                     PS_BASE_URL + psCourse.contentUrl()
+                                     PS_BASE_URL + psCourse.contentUrl(), Optional.empty()
                                     ); // On initialise les notes à vide.
             // On demande au repository de sauvegarder ce nouvel objet Course.
             courseRepository.saveCourse(course);

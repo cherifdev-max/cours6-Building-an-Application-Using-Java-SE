@@ -35,5 +35,10 @@ class CourseStorageServiceTest {
         public List<Course> getAllCourses() {
             return null;
         }
+
+        @Override
+        public void addNotes(String id, String notes) {
+
+        }
     }
 }

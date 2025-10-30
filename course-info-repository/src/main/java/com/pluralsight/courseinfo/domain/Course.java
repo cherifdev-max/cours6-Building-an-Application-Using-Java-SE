@@ -13,7 +13,7 @@ import java.util.Optional;
  * @param url L'URL complète pour accéder au cours.
  * @param notes Un champ optionnel pour que les utilisateurs ajoutent des notes personnelles.
  */
-public record Course(String id, String name, long length, String url) {
+public record Course(String id, String name, long length, String url, Optional<String> notes) {
 
     /**
      * Constructeur compact pour la validation.
@@ -32,6 +32,9 @@ public record Course(String id, String name, long length, String url) {
         }
         if (length <= 0) {
             throw new IllegalArgumentException("Course length must be a positive value.");
+        }
+        if (notes != null && notes.isPresent() && notes.get().isBlank()) {
+            throw new IllegalArgumentException("Course notes cannot be blank.");
         }
 
     }

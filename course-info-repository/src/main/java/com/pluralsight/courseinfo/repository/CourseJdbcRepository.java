@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <h2>Documentation de la classe {@code CourseJdbcRepository}</h2>
@@ -52,7 +53,8 @@ public class CourseJdbcRepository implements CourseRepository {
             MERGE INTO COURSES (id, name, length, url)
             VALUES (?, ?, ?, ?)
             """;
-
+    private static final String ADD_NOTES = """
+            UPDATE Courses SET notes = ? WHERE id = ?""";
     /**
      * <h3>Pour le Futur Expert : Le Pattern DataSource</h3>
      * <p>Une {@link DataSource} est une "usine" à connexions. C'est la manière standard et moderne d'obtenir des connexions
@@ -122,7 +124,8 @@ public class CourseJdbcRepository implements CourseRepository {
                 Course course = new Course(resultSet.getString(1),
                         resultSet.getString(2),
                         resultSet.getLong(3),
-                        resultSet.getString(4));
+                        resultSet.getString(4),
+                        Optional.ofNullable(resultSet.getString(5)));
                 courses.add(course);
             }
             // <h3>Pour le Futur Expert : Le Contrat de non-modification</h3>
@@ -135,6 +138,28 @@ public class CourseJdbcRepository implements CourseRepository {
             // <p>Le message "failed to save" est incorrect ici (c'est un copier-coller de l'autre méthode) et devrait être
             // "failed to retrieve courses". C'est un petit bug qui montre l'importance de messages d'erreur clairs.</p>
             throw new RepositoryException("failed to retrieve course ", e);
+        }
+    }
+
+    @Override
+    public void addNotes(String id, String notes) {
+        try (Connection connection = dataSource.getConnection()) {
+            // <h3>Pour le Futur Expert : Gestion des Ressources JDBC</h3>
+            // <p>Le code actuel a une faiblesse : le `PreparedStatement` n'est pas déclaré dans le bloc `try-with-resources`.
+            // Si `connection.prepareStatement()` réussit mais que `statement.setString()` échoue, le `statement` ne sera
+            // jamais fermé, créant une fuite de ressources. La version correcte et plus sûre serait :
+            // `try (Connection conn = ...; PreparedStatement stmt = conn.prepareStatement(...)) { ... }`</p>
+            PreparedStatement statement = connection.prepareStatement(ADD_NOTES);
+            statement.setString(1, notes);
+            statement.setString(2, id);
+
+
+            statement.execute();
+        } catch (SQLException e) {
+            // <h3>Pour le Débutant : Gérer les erreurs</h3>
+            // <p>Si quelque chose se passe mal avec la base de données, une `SQLException` est lancée. On l'attrape
+            // et on lance notre propre `RepositoryException` pour ne pas exposer les détails de JDBC.</p>
+            throw new RepositoryException("failed to save " + id, e);
         }
     }
 }

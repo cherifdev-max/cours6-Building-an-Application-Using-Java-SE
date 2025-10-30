@@ -79,4 +79,5 @@ public interface CourseRepository {
         return new CourseJdbcRepository(databaseFile);
     }
 
+    void addNotes(String id, String notes);
 }
